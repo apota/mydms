@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMS - Dealership Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">DMS - Dealership Management System</h1>
+            <div class="header-tools">
+                <div class="global-search">
+                    <input type="text" id="global-search" placeholder="Global Search...">
+                    <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg></button>
+                </div>
+                <button id="rudy-btn" class="ai-assistant-btn" title="Ask Rudy AI Assistant">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                    Ask Rudy
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Dashboard</a></li>
+                <li><a href="user-management.html">Users</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" data-modal="helpModal">Help</a></li>
+            </ul>
+            <div class="user-nav">
+                <span>Welcome, <span id="current-user">User</span></span>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Modules</h3>
+                <ul>
+                    <li><a href="modules/crm.html" class="module-link active">CRM</a></li>
+                    <li><a href="modules/inventory.html" class="module-link">Inventory Management</a></li>
+                    <li><a href="modules/sales.html" class="module-link">Sales Management</a></li>
+                    <li><a href="modules/service.html" class="module-link">Service Management</a></li>
+                    <li><a href="modules/parts.html" class="module-link">Parts Management</a></li>
+                    <li><a href="modules/reporting.html" class="module-link">Reporting & Analytics</a></li>
+                </ul>
+
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">View Sales Pipeline</a></li>
+                    <li><a href="#">New Customer</a></li>
+                    <li><a href="#">Service Appointments</a></li>
+                    <li><a href="#">Inventory Status</a></li>
+                </ul>
+            </aside>
+
+            <main class="content">
+                <h2>Dashboard</h2>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card card-crm">
+                        <h3>Active Customers</h3>
+                        <div class="number">1,256</div>
+                    </div>
+                    <div class="stat-card card-inventory">
+                        <h3>Vehicles in Stock</h3>
+                        <div class="number">87</div>
+                    </div>
+                    <div class="stat-card card-sales">
+                        <h3>Monthly Sales</h3>
+                        <div class="number">$467K</div>
+                    </div>
+                    <div class="stat-card card-service">
+                        <h3>Service Jobs</h3>
+                        <div class="number">43</div>
+                    </div>
+                </div>
+
+                <h3>DMS Modules</h3>
+                <div class="module-cards">
+                    <div class="module-card">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0S96 57.3 96 128s57.3 128 128 128zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
+                            </svg>
+                            Customer Relationship Management
+                        </h3>
+                        <p>Manage customer information, interactions, and relationships to improve service and drive sales opportunities.</p>
+                        <a href="modules/crm.html" class="module-link">Access CRM</a>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
+                            </svg>
+                            Inventory Management
+                        </h3>
+                        <p>Track and manage inventory of vehicles, control stock levels, and optimize ordering processes.</p>                            <a href="modules/inventory.html" class="module-link">Access Inventory</a>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <path d="M0 112.5V422.3c0 18 10.1 35 27 41.3c87 32.5 174 10.3 261-11.9c79.8-20.3 159.6-40.7 239.3-18.9c23 6.3 48.7-9.5 48.7-33.4V89.7c0-18-10.1-35-27-41.3C462 15.9 375 38.1 288 60.3C208.2 80.6 128.4 100.9 48.7 79.1C25.6 72.8 0 88.6 0 112.5zM128 416H64V352c35.3 0 64 28.7 64 64zM64 224V160h64c0 35.3-28.7 64-64 64zM448 352c0-35.3 28.7-64 64-64v64H448zm64-192c-35.3 0-64-28.7-64-64h64v64zM384 256c0 61.9-50.1 112-112 112s-112-50.1-112-112s50.1-112 112-112s112 50.1 112 112zM226 226.8L256 192l30 34.8L320 184.5V270h-22.4l-30-37.8L236 270H216V184.5l10-17.7z"/>
+                            </svg>
+                            Sales Management
+                        </h3>
+                        <p>Streamline the sales process, track leads, manage deals, and create quotes and invoices for customers.</p>
+                        <a href="modules/sales.html" class="module-link">Access Sales</a>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M352 320c88.4 0 160-71.6 160-160c0-15.3-2.2-30.1-6.2-44.2c-3.1-10.8-16.4-13.2-24.3-5.3l-76.8 76.8c-3 3-7.1 4.7-11.3 4.7H336c-8.8 0-16-7.2-16-16V119.9c0-4.2 1.7-8.3 4.7-11.3l76.8-76.8c7.9-7.9 5.4-21.2-5.3-24.3C382.1 2.2 367.3 0 352 0C263.6 0 192 71.6 192 160c0 19.1 3.4 37.5 9.5 54.5L19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L297.5 310.5c17 6.2 35.4 9.5 54.5 9.5zM80 408a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/>
+                            </svg>
+                            Service Management
+                        </h3>
+                        <p>Schedule service appointments, manage repair orders, track technician productivity, and handle customer service.</p>
+                        <a href="modules/service.html" class="module-link">Access Service</a>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M174.7 45.1C192.2 17 223 0 256 0s63.8 17 81.3 45.1l38.6 61.7 27-15.6c8.4-4.9 18.9-4.2 26.6 1.7s11.1 15.9 8.9 25.3l-8.3 34.3 32.2 14.2c8.1 3.6 13.9 11 15.1 19.9s-1.9 17.9-8.5 24.1l-24.2 23 14.4 32.3c3.6 8.1 2.4 17.3-3.1 24.4s-14.1 10.5-22.8 9.9l-32-2.2-2 32c-.5 8.6-5.8 16.1-13.8 19.9s-17.1 2.3-24.5-2.9l-27.3-19-19 27.3c-5.2 7.4-13.9 11-22.6 9.4s-16-8-18.4-16.4l-8.5-30.1-30.1 8.5c-8.4 2.4-17.4 .2-23.3-5.7s-8.2-14.5-6-22.8l8.2-30.8-30.7-8.3c-8.4-2.3-15-9-17.1-17.5s.1-17.4 6.8-23.3l24.5-21.3-21.3-24.5c-5.9-6.8-7.9-16.2-5.5-24.7s9.7-14.9 18.2-16.7l31.1-6.7-6.5-31.2c-1.8-8.5 .9-17.3 7.1-23.2s14.9-8.1 23.2-6.1l30.9 8V77.8l30.3-9.8c8.2-2.7 17.2-.5 23.4 5.6z"/>
+                            </svg>
+                            Parts Management
+                        </h3>
+                        <p>Manage parts inventory, track vendor relationships, process orders, and integrate with service operations.</p>
+                        <a href="modules/parts.html" class="module-link">Access Parts</a>
+                    </div>
+
+                    <div class="module-card">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                <path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/>
+                            </svg>
+                            Reporting & Analytics
+                        </h3>
+                        <p>Generate comprehensive reports, analyze business performance, and gain insights to make informed decisions.</p>
+                        <a href="modules/reporting.html" class="module-link">Access Reports</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- User Management Modal -->
+    <div id="userManagementModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>User Management</h2>
+            <p>This section would allow administrators to manage system users, including:</p>
+            <ul>
+                <li>Creating new user accounts</li>
+                <li>Assigning roles and permissions</li>
+                <li>Resetting passwords</li>
+                <li>Deactivating accounts</li>
+            </ul>
+            <p><i>This functionality would be implemented in a production version.</i></p>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>System Settings</h2>
+            <p>This section would allow administrators to configure system-wide settings, including:</p>
+            <ul>
+                <li>Company information</li>
+                <li>Email notifications</li>
+                <li>Integration settings</li>
+                <li>System preferences</li>
+            </ul>
+            <p><i>This functionality would be implemented in a production version.</i></p>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Help & Support</h2>
+            <p>For assistance with the Dealership Management System, please contact:</p>
+            <ul>
+                <li>Email: support@dms-system.com</li>
+                <li>Phone: 1-800-DMS-HELP</li>
+            </ul>
+            <p><strong>Documentation:</strong> User manuals and training materials would be available here in a production version.</p>
+        </div>
+    </div>
+
+    <!-- Search Results Modal -->
+    <div id="searchResultsModal" class="modal">
+        <div class="modal-content search-modal">
+            <span class="close">&times;</span>
+            <h2>Global Search Results</h2>
+            <div class="search-tabs">
+                <button class="search-tab-btn active" data-tab="all">All Results</button>
+                <button class="search-tab-btn" data-tab="customers">Customers</button>
+                <button class="search-tab-btn" data-tab="vehicles">Vehicles</button>
+                <button class="search-tab-btn" data-tab="sales">Sales</button>
+                <button class="search-tab-btn" data-tab="service">Service</button>
+            </div>
+            <div class="search-results">
+                <!-- Search results will be populated here by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rudy AI Assistant Modal -->
+    <div id="rudyModal" class="modal">
+        <div class="modal-content rudy-modal">
+            <span class="close">&times;</span>
+            <div class="rudy-header">
+                <div class="rudy-avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                </div>
+                <div>
+                    <h2>Rudy AI Assistant</h2>
+                    <p>Your dealership management helper</p>
+                </div>
+            </div>
+            <div class="rudy-conversation">
+                <div class="rudy-message">
+                    <div class="rudy-avatar small">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                    </div>
+                    <div class="message-content">
+                        Hi there! I'm Rudy, your AI assistant for the Dealership Management System. How can I help you today? You can ask me questions about the system, get help with tasks, or request information about dealership operations.
+                    </div>
+                </div>
+            </div>
+            <div class="rudy-input">
+                <input type="text" id="rudy-prompt" placeholder="Ask Rudy anything...">
+                <button id="rudy-send">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480V396.4c0-4 1.5-7.8 4.2-10.7L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

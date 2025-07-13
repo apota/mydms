@@ -1,0 +1,115 @@
+.heatmap-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.heatmap-legend {
+    display: flex;
+    margin-bottom: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 10px;
+}
+
+.heatmap-cell {
+    padding: 10px;
+    border-radius: 5px;
+    color: #333;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cell-header {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.cell-count {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cell-days {
+    font-size: 14px;
+}
+
+/* Aging color coding */
+.aging-normal {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.aging-warning-low {
+    background-color: #8BC34A;
+    color: white;
+}
+
+.aging-warning-medium {
+    background-color: #FFEB3B;
+    color: #333;
+}
+
+.aging-warning-high {
+    background-color: #FF9800;
+    color: white;
+}
+
+.aging-critical {
+    background-color: #F44336;
+    color: white;
+}
+
+/* Summary styles */
+.aging-summary {
+    margin-bottom: 15px;
+}
+
+.summary-category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.aging-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.aging-count {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+}

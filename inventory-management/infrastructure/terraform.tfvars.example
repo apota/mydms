@@ -1,0 +1,44 @@
+# AWS region
+aws_region = "us-east-1"
+
+# Environment name
+environment = "dev"
+
+# VPC configuration
+vpc_cidr = "10.0.0.0/16"
+availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+public_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+database_subnets = ["10.0.201.0/24", "10.0.202.0/24", "10.0.203.0/24"]
+
+# Database configuration
+db_instance_class = "db.t3.medium"
+db_allocated_storage = 20
+db_max_allocated_storage = 100
+db_username = "dmsadmin"
+db_password = "REPLACE_WITH_STRONG_PASSWORD"  # Replace with a strong password in the actual tfvars file
+
+# CORS configuration
+allowed_origins = ["https://dev-inventory.example.com", "http://localhost:3000"]
+
+# API and worker configuration
+api_task_cpu = 512
+api_task_memory = 1024
+worker_task_cpu = 256
+worker_task_memory = 512
+api_service_count = 2
+worker_service_count = 1
+
+# ECR and container images
+ecr_repository_url = "111222333444.dkr.ecr.us-east-1.amazonaws.com/dms-inventory"
+api_image_tag = "latest"
+worker_image_tag = "latest"
+
+# SSL certificate
+certificate_arn = "arn:aws:acm:us-east-1:111222333444:certificate/REPLACE_WITH_ACTUAL_CERTIFICATE_ARN"
+
+# .NET environment
+dotnet_environment = "Development"
+
+# CloudWatch logs
+log_retention_days = 14

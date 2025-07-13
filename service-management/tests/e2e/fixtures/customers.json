@@ -1,0 +1,63 @@
+{
+  "customers": [
+    {
+      "id": "c001",
+      "fullName": "John Smith",
+      "email": "jsmith@example.com",
+      "phone": "555-123-4567",
+      "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "state": "IL",
+        "zipCode": "62704"
+      }
+    },
+    {
+      "id": "c002",
+      "fullName": "Sarah Johnson",
+      "email": "sjohnson@example.com",
+      "phone": "555-987-6543",
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Springfield",
+        "state": "IL",
+        "zipCode": "62701"
+      }
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "v001",
+      "customerId": "c001",
+      "make": "Honda",
+      "model": "Accord",
+      "year": 2020,
+      "vin": "1HGCV2F34LA012345",
+      "licensePlate": "ABC123",
+      "color": "Blue",
+      "mileage": 25000
+    },
+    {
+      "id": "v002",
+      "customerId": "c001",
+      "make": "Toyota",
+      "model": "RAV4",
+      "year": 2019,
+      "vin": "JTMDFREV2KJ023456",
+      "licensePlate": "XYZ789",
+      "color": "Silver",
+      "mileage": 32500
+    },
+    {
+      "id": "v003",
+      "customerId": "c002",
+      "make": "Ford",
+      "model": "Explorer",
+      "year": 2021,
+      "vin": "1FMSK8DH3MGB78901",
+      "licensePlate": "DEF456",
+      "color": "Black",
+      "mileage": 18000
+    }
+  ]
+}

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - DMS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">DMS - Dealership Management System</h1>
+            <div class="header-tools">
+                <div    <script src="js/main.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>ass="global-search">
+                    <input type="text" id="global-search" placeholder="Global Search...">
+                    <button id="search-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg></button>
+                </div>
+                <button id="rudy-btn" class="ai-assistant-btn" title="Ask Rudy AI Assistant">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                    Ask Rudy
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="user-management.html">Users</a></li>
+                <li><a href="settings.html" class="active">Settings</a></li>
+                <li><a href="#" data-modal="helpModal">Help</a></li>
+            </ul>
+            <div class="user-nav">
+                <span>Welcome, <span id="current-user">User</span></span>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Modules</h3>
+                <ul>
+                    <li><a href="modules/crm.html" class="module-link" data-module="crm">CRM</a></li>
+                    <li><a href="modules/inventory.html" class="module-link" data-module="inventory">Inventory Management</a></li>
+                    <li><a href="modules/sales.html" class="module-link" data-module="sales">Sales Management</a></li>
+                    <li><a href="modules/service.html" class="module-link" data-module="service">Service Management</a></li>
+                    <li><a href="modules/parts.html" class="module-link" data-module="parts">Parts Management</a></li>
+                    <li><a href="modules/reporting.html" class="module-link" data-module="reporting">Reporting & Analytics</a></li>
+                </ul>
+
+                <h3>Administration</h3>
+                <ul>
+                    <li><a href="user-management.html">User Management</a></li>
+                    <li><a href="settings.html" class="active">System Settings</a></li>
+                    <li><a href="roles.html">Roles & Permissions</a></li>
+                    <li><a href="audit-logs.html">Audit Logs</a></li>
+                </ul>
+            </aside>
+
+            <main class="content">
+                <h2>System Settings</h2>
+                
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="general">General</button>
+                    <button class="tab-btn" data-tab="company">Company Information</button>
+                    <button class="tab-btn" data-tab="email">Email Settings</button>
+                    <button class="tab-btn" data-tab="integration">Integrations</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                    <button class="tab-btn" data-tab="backup">Backup & Recovery</button>
+                </div>
+
+                <div class="tab-content" id="general-tab">
+                    <h3>General Settings</h3>
+                    
+                    <form id="general-settings-form">
+                        <div class="form-group">
+                            <label for="system-name">System Name</label>
+                            <input type="text" id="system-name" name="systemName" value="Dealership Management System">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date-format">Date Format</label>
+                            <select id="date-format" name="dateFormat">
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="time-format">Time Format</label>
+                            <select id="time-format" name="timeFormat">
+                                <option value="12">12-hour (AM/PM)</option>
+                                <option value="24">24-hour</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="language">Default Language</label>
+                            <select id="language" name="language">
+                                <option value="en">English</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="currency">Default Currency</label>
+                            <select id="currency" name="currency">
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="CAD">CAD ($)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Session Timeout</label>
+                            <div class="input-group">
+                                <input type="number" id="session-timeout" name="sessionTimeout" value="30" min="5" max="120">
+                                <span>minutes</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content hidden" id="company-tab">
+                    <h3>Company Information</h3>
+                    
+                    <form id="company-info-form">
+                        <div class="form-group">
+                            <label for="company-name">Company Name</label>
+                            <input type="text" id="company-name" name="companyName" value="ABC Motors">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-address">Address</label>
+                            <textarea id="company-address" name="companyAddress">123 Auto Lane
+Carlot City, CA 90210</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="company-phone">Phone Number</label>
+                                <input type="tel" id="company-phone" name="companyPhone" value="(555) 123-4567">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company-email">Email</label>
+                                <input type="email" id="company-email" name="companyEmail" value="info@abcmotors.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-website">Website</label>
+                            <input type="url" id="company-website" name="companyWebsite" value="https://www.abcmotors.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-logo">Company Logo</label>
+                            <div class="file-upload">
+                                <input type="file" id="company-logo" name="companyLogo">
+                                <div class="logo-preview">
+                                    <img src="img/default-logo.png" alt="Company Logo">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Company Information</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content hidden" id="email-tab">
+                    <h3>Email Settings</h3>
+                    
+                    <form id="email-settings-form">
+                        <div class="form-group">
+                            <label for="smtp-server">SMTP Server</label>
+                            <input type="text" id="smtp-server" name="smtpServer" value="smtp.company.com">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="smtp-port">Port</label>
+                                <input type="number" id="smtp-port" name="smtpPort" value="587">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="smtp-security">Security</label>
+                                <select id="smtp-security" name="smtpSecurity">
+                                    <option value="tls">TLS</option>
+                                    <option value="ssl">SSL</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="smtp-username">Username</label>
+                            <input type="text" id="smtp-username" name="smtpUsername" value="notifications@company.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="smtp-password">Password</label>
+                            <input type="password" id="smtp-password" name="smtpPassword" value="••••••••">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="from-email">From Email</label>
+                            <input type="email" id="from-email" name="fromEmail" value="notifications@company.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email-signature">Default Email Signature</label>
+                            <textarea id="email-signature" name="emailSignature">Best regards,
+ABC Motors Team
+(555) 123-4567
+www.abcmotors.com</textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="test-email-btn">Test Connection</button>
+                            <button type="submit" class="btn btn-primary">Save Email Settings</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content hidden" id="integration-tab">
+                    <h3>Integrations</h3>
+                    
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <h4>QuickBooks</h4>
+                            <div class="integration-status">
+                                <span class="status active">Connected</span>
+                            </div>
+                        </div>
+                        <p>Integration with QuickBooks for financial management.</p>
+                        <div class="integration-actions">
+                            <button class="btn btn-secondary">Configure</button>
+                            <button class="btn btn-danger">Disconnect</button>
+                        </div>
+                    </div>
+                    
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <h4>Twilio SMS</h4>
+                            <div class="integration-status">
+                                <span class="status active">Connected</span>
+                            </div>
+                        </div>
+                        <p>Integration with Twilio for SMS notifications.</p>
+                        <div class="integration-actions">
+                            <button class="btn btn-secondary">Configure</button>
+                            <button class="btn btn-danger">Disconnect</button>
+                        </div>
+                    </div>
+                    
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <h4>AutoCheck VIN</h4>
+                            <div class="integration-status">
+                                <span class="status inactive">Not Connected</span>
+                            </div>
+                        </div>
+                        <p>Integration with AutoCheck for vehicle history reports.</p>
+                        <div class="integration-actions">
+                            <button class="btn btn-primary">Connect</button>
+                        </div>
+                    </div>
+                    
+                    <div class="integration-card">
+                        <div class="integration-header">
+                            <h4>Google Calendar</h4>
+                            <div class="integration-status">
+                                <span class="status inactive">Not Connected</span>
+                            </div>
+                        </div>
+                        <p>Integration with Google Calendar for scheduling appointments.</p>
+                        <div class="integration-actions">
+                            <button class="btn btn-primary">Connect</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="security-tab">
+                    <h3>Security Settings</h3>
+                    
+                    <form id="security-settings-form">
+                        <div class="section-title">Password Policy</div>
+                        
+                        <div class="form-group">
+                            <label>Minimum Password Length</label>
+                            <div class="input-group">
+                                <input type="number" id="min-password-length" name="minPasswordLength" value="8" min="6" max="20">
+                                <span>characters</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Password Requirements</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="requireNumbers" checked>
+                                    Require numbers
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="requireUppercase" checked>
+                                    Require uppercase letters
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="requireSymbols" checked>
+                                    Require special characters
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Password Expiration</label>
+                            <div class="input-group">
+                                <input type="number" id="password-expiration" name="passwordExpiration" value="90" min="0" max="365">
+                                <span>days (0 = never)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">Two-Factor Authentication</div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="enable2FA">
+                                Enable Two-Factor Authentication for all users
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>2FA Method</label>
+                            <select id="2fa-method" name="2faMethod" disabled>
+                                <option value="app">Authenticator App</option>
+                                <option value="email">Email</option>
+                                <option value="sms">SMS</option>
+                            </select>
+                        </div>
+                        
+                        <div class="section-title">Login Restrictions</div>
+                        
+                        <div class="form-group">
+                            <label>Failed Login Attempts Before Lockout</label>
+                            <div class="input-group">
+                                <input type="number" id="failed-attempts" name="failedAttempts" value="5" min="3" max="10">
+                                <span>attempts</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Account Lockout Duration</label>
+                            <div class="input-group">
+                                <input type="number" id="lockout-duration" name="lockoutDuration" value="30" min="5" max="1440">
+                                <span>minutes</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Security Settings</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content hidden" id="backup-tab">
+                    <h3>Backup & Recovery</h3>
+                    
+                    <div class="section-title">Scheduled Backups</div>
+                    
+                    <div class="form-group">
+                        <label>Backup Frequency</label>
+                        <select id="backup-frequency" name="backupFrequency">
+                            <option value="daily">Daily</option>
+                            <option value="weekly" selected>Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Backup Time</label>
+                        <input type="time" id="backup-time" name="backupTime" value="02:00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Backup Retention</label>
+                        <div class="input-group">
+                            <input type="number" id="backup-retention" name="backupRetention" value="30" min="7" max="365">
+                            <span>days</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Backup Storage Location</label>
+                        <select id="backup-storage" name="backupStorage">
+                            <option value="local">Local Storage</option>
+                            <option value="s3" selected>Amazon S3</option>
+                            <option value="azure">Azure Blob Storage</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="s3-settings">
+                        <label>S3 Bucket Name</label>
+                        <input type="text" id="s3-bucket" name="s3Bucket" value="dms-backups">
+                    </div>
+                    
+                    <div class="section-title">Manual Backup</div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-secondary" id="manual-backup-btn">Create Backup Now</button>
+                        <p class="note">Last manual backup: June 25, 2025 09:45 AM</p>
+                    </div>
+                    
+                    <div class="section-title">Recent Backups</div>
+                    
+                    <div class="backup-list">
+                        <div class="backup-item">
+                            <div class="backup-info">
+                                <strong>Weekly Backup</strong>
+                                <span>June 26, 2025 02:00 AM</span>
+                                <span>Size: 856 MB</span>
+                            </div>
+                            <div class="backup-actions">
+                                <button class="action-btn download-btn" title="Download">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+                                </button>
+                                <button class="action-btn restore-btn" title="Restore">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="backup-item">
+                            <div class="backup-info">
+                                <strong>Weekly Backup</strong>
+                                <span>June 19, 2025 02:00 AM</span>
+                                <span>Size: 843 MB</span>
+                            </div>
+                            <div class="backup-actions">
+                                <button class="action-btn download-btn" title="Download">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+                                </button>
+                                <button class="action-btn restore-btn" title="Restore">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="backup-item">
+                            <div class="backup-info">
+                                <strong>Manual Backup</strong>
+                                <span>June 25, 2025 09:45 AM</span>
+                                <span>Size: 855 MB</span>
+                            </div>
+                            <div class="backup-actions">
+                                <button class="action-btn download-btn" title="Download">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+                                </button>
+                                <button class="action-btn restore-btn" title="Restore">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Help & Support</h2>
+            <p>For assistance with the Dealership Management System, please contact:</p>
+            <ul>
+                <li>Email: support@dms-system.com</li>
+                <li>Phone: 1-800-DMS-HELP</li>
+            </ul>
+            <p><strong>Documentation:</strong> User manuals and training materials would be available here in a production version.</p>
+        </div>
+    </div>
+
+    <!-- Rudy AI Assistant Modal -->
+    <div id="rudyModal" class="modal">
+        <div class="modal-content rudy-modal">
+            <span class="close">&times;</span>
+            <div class="rudy-header">
+                <div class="rudy-avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                </div>
+                <div>
+                    <h2>Rudy AI Assistant</h2>
+                    <p>Your dealership management helper</p>
+                </div>
+            </div>
+            <div class="rudy-conversation">
+                <div class="rudy-message">
+                    <div class="rudy-avatar small">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80z"/></svg>
+                    </div>
+                    <div class="message-content">
+                        Hi there! I'm Rudy, your AI assistant for the Dealership Management System. How can I help you today? You can ask me questions about the system, get help with tasks, or request information about dealership operations.
+                    </div>
+                </div>
+            </div>
+            <div class="rudy-input">
+                <input type="text" id="rudy-prompt" placeholder="Ask Rudy anything...">
+                <button id="rudy-send">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480V396.4c0-4 1.5-7.8 4.2-10.7L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>

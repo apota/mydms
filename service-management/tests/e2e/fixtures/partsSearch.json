@@ -1,0 +1,22 @@
+{
+  "results": [
+    {
+      "partId": "p001",
+      "partNumber": "BP-12345",
+      "description": "Premium front brake pads",
+      "category": "Brakes",
+      "price": 89.99,
+      "quantityInStock": 8,
+      "location": "A12-3"
+    },
+    {
+      "partId": "p002",
+      "partNumber": "HW-56789",
+      "description": "Brake hardware kit",
+      "category": "Brakes",
+      "price": 24.99,
+      "quantityInStock": 12,
+      "location": "A12-4"
+    }
+  ]
+}

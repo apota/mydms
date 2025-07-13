@@ -1,0 +1,97 @@
+{
+  "appointments": [
+    {
+      "customerId": "c001",
+      "vehicleId": "v001",
+      "appointmentType": "Oil Change",
+      "date": "2025-06-25",
+      "time": "09:30",
+      "duration": 60,
+      "customerConcerns": "Regular oil change plus check engine light inspection",
+      "transportationType": "Wait",
+      "contactPhone": "555-123-4567",
+      "contactEmail": "jsmith@example.com"
+    },
+    {
+      "customerId": "c002",
+      "vehicleId": "v003",
+      "appointmentType": "Brake Service",
+      "date": "2025-06-26",
+      "time": "14:00",
+      "duration": 120,
+      "customerConcerns": "Squeaking noise when braking, especially at low speeds",
+      "transportationType": "Loaner",
+      "contactPhone": "555-987-6543",
+      "contactEmail": "sjohnson@example.com"
+    }
+  ],
+  "inspections": [
+    {
+      "repairOrderId": "ro001",
+      "points": [
+        {
+          "id": "brakes-front-pads",
+          "result": "FAIL",
+          "notes": "Front brake pads worn to 2mm, below safety threshold"
+        },
+        {
+          "id": "brakes-rear-pads",
+          "result": "WARNING",
+          "notes": "Rear pads at 4mm, approaching replacement"
+        },
+        {
+          "id": "brakes-front-rotors",
+          "result": "PASS",
+          "notes": "Front rotors in good condition"
+        },
+        {
+          "id": "exterior-tires",
+          "result": "PASS",
+          "notes": "Tires in good condition, tread depth 6mm"
+        }
+      ],
+      "services": [
+        {
+          "description": "Front brake pad replacement",
+          "urgency": "CRITICAL",
+          "price": "249.99"
+        },
+        {
+          "description": "Rear brake pad replacement",
+          "urgency": "SOON",
+          "price": "229.99"
+        }
+      ],
+      "generalNotes": "Vehicle is due for brake fluid flush as well, last done 24 months ago"
+    }
+  ],
+  "serviceJobs": [
+    {
+      "repairOrderId": "ro001",
+      "description": "Front brake pad replacement",
+      "jobType": "Brake Service",
+      "laborCode": "BRK-001",
+      "estHours": "1.5",
+      "technician": "John Technician",
+      "parts": [
+        {
+          "partNumber": "BP-12345",
+          "description": "Premium front brake pads",
+          "quantity": "1",
+          "unitPrice": "89.99"
+        },
+        {
+          "partNumber": "HW-56789",
+          "description": "Brake hardware kit",
+          "quantity": "1",
+          "unitPrice": "24.99"
+        }
+      ]
+    }
+  ],
+  "jobCompletion": {
+    "actualHours": "1.25",
+    "notes": "Completed front brake pad replacement. Customer declined brake fluid flush recommendation.",
+    "signature": true
+  }
+}

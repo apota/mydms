@@ -1,0 +1,46 @@
+.vehicle-import-container {
+  padding: 20px 0;
+}
+
+.dealer-codes-list,
+.makes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dealer-code-tag,
+.make-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 14px;
+}
+
+.dealer-code-tag .btn-close,
+.make-tag .btn-close {
+  font-size: 10px;
+  margin-left: 8px;
+  padding: 2px;
+}
+
+.error-list {
+  color: #dc3545;
+}
+
+.tab-content .card {
+  border-top-left-radius: 0;
+}
+
+/* Make the tab bottom border match the card */
+.nav-tabs .nav-link.active {
+  border-bottom-color: #fff;
+}
+
+/* Add icon spacing */
+.nav-tabs .nav-link svg {
+  margin-right: 8px;
+}

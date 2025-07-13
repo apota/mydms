@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DMS.SalesManagement.Core.Tests": {
+      "commandName": "Project",
+      "dotnetRunMessages": true
+    }
+  }
+}

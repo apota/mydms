@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # external services port range
+    environment:
+      - SERVICES=dynamodb,lambda,apigateway
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_EXECUTOR=local
+      # Use a different path to avoid the '/tmp/localstack' busy device issue
+      - DATA_DIR=/var/lib/localstack/data
+      - TMPDIR=/var/lib/localstack
+      - HOST_TMP_FOLDER=/var/lib/localstack
+      - LS_LOG=trace
+      - PERSISTENCE=1
+      # CORS Configuration for web browser access
+      - CORS=*
+      - EXTRA_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000,http://localhost:8080,http://localhost:5000,file://
+      - EXTRA_CORS_ALLOWED_HEADERS=Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token,X-Amz-Target,X-Amz-User-Agent
+      - EXTRA_CORS_ALLOWED_METHODS=GET,POST,PUT,DELETE,OPTIONS,HEAD
+      - GATEWAY_LISTEN=0.0.0.0:4566
+    volumes:
+      # Use a named volume instead of host directory to avoid permission issues
+      - "localstack-data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  # Use a named volume for persistence
+  localstack-data:
+    driver: local

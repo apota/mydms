@@ -1,0 +1,763 @@
+services:
+  # Infrastructure Services
+  localstack:
+    container_name: dms-localstack
+    image: localstack/localstack:3.0
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    environment:
+      - SERVICES=s3,dynamodb,sqs,sns,lambda,apigateway,iam,cloudformation,cognito-idp,ses
+      - DEBUG=1
+      - DATA_DIR=/var/lib/localstack
+      - LOCALSTACK_HOST=localstack
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - PERSISTENCE=1
+      - DISABLE_CORS_CHECKS=1
+    volumes:
+      - "./infrastructure/localstack:/etc/localstack/init/ready.d"
+      - "localstack-data:/var/lib/localstack"
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  postgres:
+    container_name: dms-postgres
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=dms_main
+      - POSTGRES_USER=dms_user
+      - POSTGRES_PASSWORD=dms_password
+      - POSTGRES_MULTIPLE_DATABASES=dms_auth,dms_inventory,dms_sales,dms_service,dms_parts,dms_financial,dms_users,dms_settings,dms_crm
+    volumes:
+      - "./infrastructure/database/init:/docker-entrypoint-initdb.d"
+      - "postgres-data:/var/lib/postgresql/data"
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dms_user -d dms_main"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    container_name: dms-redis
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - "redis-data:/data"
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # API Gateway
+  api-gateway:
+    container_name: dms-api-gateway
+    build:
+      context: ./apps/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+      - REDIS_URL=redis://redis:6379
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - INVENTORY_SERVICE_URL=http://inventory-service:8082
+      - SALES_SERVICE_URL=http://sales-service:8083
+      - SERVICE_SERVICE_URL=http://service-service:8084
+      - PARTS_SERVICE_URL=http://parts-service:8085
+      - FINANCIAL_SERVICE_URL=http://financial-service:8087
+      - AI_SERVICE_URL=http://ai-service:8088
+      - USER_SERVICE_URL=http://user-management-api:5003
+      - SETTINGS_SERVICE_URL=http://dms-settings-api:8090
+      - CRM_SERVICE_URL=http://crm-api:7001
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Microservices
+  auth-service:
+    container_name: dms-auth-service
+    build:
+      context: ./apps/services/auth-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - NODE_ENV=development
+      - PORT=8081
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_auth
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dms-auth-secret-key-2025
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  inventory-service:
+    container_name: dms-inventory-service
+    build:
+      context: ./apps/services/inventory-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - NODE_ENV=development
+      - PORT=8082
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_inventory
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  sales-service:
+    container_name: dms-sales-service
+    build:
+      context: ./apps/services/sales-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - NODE_ENV=development
+      - PORT=8083
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_sales
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  service-service:
+    container_name: dms-service-service
+    build:
+      context: ./apps/services/service-service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - NODE_ENV=development
+      - PORT=8084
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_service
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  parts-service:
+    container_name: dms-parts-service
+    build:
+      context: ./apps/services/parts-service
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    environment:
+      - NODE_ENV=development
+      - PORT=8085
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_parts
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  financial-service:
+    container_name: dms-financial-service
+    build:
+      context: ./apps/services/financial-service
+      dockerfile: Dockerfile
+    ports:
+      - "8087:8087"
+    environment:
+      - NODE_ENV=development
+      - PORT=8087
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_financial
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8087/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  ai-service:
+    container_name: dms-ai-service
+    build:
+      context: ./apps/services/ai-service
+      dockerfile: Dockerfile
+    ports:
+      - "8088:8088"
+    environment:
+      - NODE_ENV=development
+      - PORT=8088
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - OPENAI_API_KEY=demo-key
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  user-service:
+    container_name: dms-user-service
+    build:
+      context: ./apps/services/user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8089:8089"
+    environment:
+      - NODE_ENV=development
+      - PORT=8089
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_users
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+      - REDIS_URL=redis://redis:6379
+      - AWS_ENDPOINT_URL=http://localstack:4566
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8089/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Settings Management Service
+  settings-service:
+    container_name: dms-settings-api
+    build:
+      context: ../settings-management/src
+      dockerfile: DMS.SettingsManagement.API/Dockerfile
+    ports:
+      - "8090:8090"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8090
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_settings
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8090/api/settings/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  # CRM API Service
+  crm-api:
+    container_name: dms-crm-api
+    build:
+      context: ..
+      dockerfile: crm/src/DMS.CRM.API/Dockerfile
+    ports:
+      - "8093:7001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:7001
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=dms_crm;Username=dms_user;Password=dms_password
+      - CORS__AllowedOrigins=http://localhost:3000,http://localhost:3004
+    depends_on:
+      postgres:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:7001/api/dashboard || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  # Entrypoint/Dashboard API Service
+  entrypoint-api:
+    container_name: dms-entrypoint-api
+    build:
+      context: ../entrypoint/src
+      dockerfile: DMS.Entrypoint.API/Dockerfile
+    ports:
+      - "8091:8091"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8091
+      - ServiceUrls__Inventory=http://inventory-service:8082
+      - ServiceUrls__Sales=http://sales-service:8083
+      - ServiceUrls__Service=http://service-service:8084
+      - ServiceUrls__Parts=http://parts-service:8085
+      - ServiceUrls__Reporting=http://ai-service:8088
+      - ServiceUrls__Settings=http://settings-service:8090
+      - ServiceUrls__UserManagement=http://user-management-api:5003
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8091/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  # User Management Service
+  user-management-api:
+    container_name: dms-user-management-api
+    build:
+      context: ../user-management/src
+      dockerfile: DMS.UserManagement.API/Dockerfile
+    ports:
+      - "8092:5003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5003
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dms_users
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5003/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  user-management-web:
+    container_name: dms-user-management-web
+    build:
+      context: ../user-management/src/DMS.UserManagement.Web
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8092/api
+    depends_on:
+      - user-management-api
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  # CRM Web Application
+  crm-web:
+    container_name: dms-crm-web
+    build:
+      context: ../crm/src/DMS.CRM.Web
+      dockerfile: Dockerfile
+    ports:
+      - "3004:80"
+    environment:
+      - REACT_APP_ENV=development
+      - NODE_ENV=production
+    depends_on:
+      - crm-api
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  # Frontend Applications
+  frontend:
+    container_name: dms-frontend
+    build:
+      context: ../entrypoint/src/DMS.Entrypoint.Web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+      - REACT_APP_ENTRYPOINT_API_URL=http://localhost:8091
+      - REACT_APP_ENV=development
+      - REACT_APP_COMPANY_NAME=Demo Automotive
+    volumes:
+      - "./config/nginx/frontend.conf:/etc/nginx/conf.d/default.conf"
+    depends_on:
+      - postgres
+      - redis
+      - localstack
+      - entrypoint-api
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  admin:
+    container_name: dms-admin
+    build:
+      context: ./apps/admin
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+      - REACT_APP_ENV=development
+    volumes:
+      - "./config/nginx/admin.conf:/etc/nginx/conf.d/default.conf"
+    depends_on:
+      - postgres
+      - redis
+      - localstack
+    networks:
+      - dms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Initialization Services
+  db-init:
+    container_name: dms-db-init
+    image: postgres:15-alpine
+    environment:
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=dms_user
+      - PGPASSWORD=dms_password
+    volumes:
+      - "./infrastructure/database/init:/scripts"
+    command: >
+      sh -c "
+      echo 'Waiting for PostgreSQL to be ready...';
+      until pg_isready -h postgres -p 5432 -U dms_user; do
+        echo 'PostgreSQL is unavailable - sleeping';
+        sleep 2;
+      done;
+      echo 'PostgreSQL is ready - executing initialization scripts';
+      if ! psql -h postgres -U dms_user -d dms_main -c 'SELECT 1 FROM users LIMIT 1;' 2>/dev/null; then
+        echo 'Initializing database schema...';
+        psql -h postgres -U dms_user -d dms_main -f /scripts/02_schema.sql;
+        echo 'Database schema initialized';
+      else
+        echo 'Database schema already exists';
+      fi;
+      if ! psql -h postgres -U dms_user -d dms_settings -c 'SELECT 1 FROM user_settings LIMIT 1;' 2>/dev/null; then
+        echo 'Initializing settings database schema...';
+        psql -h postgres -U dms_user -d dms_settings -f /scripts/03_settings_schema.sql;
+        echo 'Settings database schema initialized';
+      else
+        echo 'Settings database schema already exists';
+      fi;
+      echo 'Database initialization complete';
+      "
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dms-network
+    restart: "no"
+
+  localstack-init:
+    container_name: dms-localstack-init
+    image: amazon/aws-cli:latest
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - "./infrastructure/localstack:/scripts"
+    command: >
+      sh -c "
+      echo 'Waiting for LocalStack to be ready...';
+      until curl -f http://localstack:4566/_localstack/health; do
+        echo 'LocalStack is unavailable - sleeping';
+        sleep 5;
+      done;
+      echo 'LocalStack is ready - executing initialization scripts';
+      echo 'Initializing AWS resources...';
+      chmod +x /scripts/01_init_aws_resources.sh;
+      /scripts/01_init_aws_resources.sh;
+      echo 'AWS resources initialized';
+      echo 'Loading sample data...';
+      chmod +x /scripts/02_load_sample_data.sh;
+      /scripts/02_load_sample_data.sh;
+      echo 'LocalStack initialization complete';
+      "
+    depends_on:
+      localstack:
+        condition: service_healthy
+    networks:
+      - dms-network
+    restart: "no"
+
+  # Data initialization service
+  data-init:
+    container_name: dms-data-init
+    image: curlimages/curl:latest
+    volumes:
+      - "./data:/data"
+    command: >
+      sh -c "
+      echo 'Waiting for all services to be ready...';
+      until curl -f http://api-gateway:8080/health; do
+        echo 'API Gateway is unavailable - sleeping';
+        sleep 5;
+      done;
+      until curl -f http://auth-service:8081/health; do
+        echo 'Auth Service is unavailable - sleeping';
+        sleep 5;
+      done;
+      until curl -f http://dms-settings-api:8090/health; do
+        echo 'Settings Service is unavailable - sleeping';
+        sleep 5;
+      done;
+      until curl -f http://user-management-api:5003/health; do
+        echo 'User Management Service is unavailable - sleeping';
+        sleep 5;
+      done;
+      until curl -f http://crm-api:7001/api/dashboard; do
+        echo 'CRM Service is unavailable - sleeping';
+        sleep 5;
+      done;
+      echo 'All services are ready - loading demo data';
+      if [ -f /data/demo-data.json ]; then
+        echo 'Loading demo data...';
+        echo 'Creating demo admin user...';
+        curl -X POST http://auth-service:8081/api/auth/register -H 'Content-Type: application/json' -d '{\"username\": \"admin\", \"email\": \"admin@demoauto.com\", \"password\": \"admin123\", \"firstName\": \"Demo\", \"lastName\": \"Admin\", \"role\": \"admin\"}' || echo 'Admin user may already exist';
+        echo 'Getting auth token...';
+        TOKEN=$$(curl -s -X POST http://auth-service:8081/api/auth/login -H 'Content-Type: application/json' -d '{\"username\": \"admin\", \"password\": \"admin123\"}' | grep -o '\"token\":\"[^\"]*\"' | cut -d'\"' -f4 || echo 'demo-token');
+        if [ \"$$TOKEN\" != \"demo-token\" ]; then
+          echo \"Got auth token: $${TOKEN:0:20}...\";
+          echo 'Loading vehicles...';
+          curl -X POST http://api-gateway:8080/api/inventory/vehicles -H \"Authorization: Bearer $$TOKEN\" -H 'Content-Type: application/json' -d '{\"vin\": \"VIN001\", \"make\": \"Toyota\", \"model\": \"Camry\", \"year\": 2024, \"color\": \"White\", \"price\": 28500, \"status\": \"available\"}' || echo 'Failed to add vehicle 1';
+          curl -X POST http://api-gateway:8080/api/inventory/vehicles -H \"Authorization: Bearer $$TOKEN\" -H 'Content-Type: application/json' -d '{\"vin\": \"VIN002\", \"make\": \"Honda\", \"model\": \"Civic\", \"year\": 2024, \"color\": \"Blue\", \"price\": 24000, \"status\": \"available\"}' || echo 'Failed to add vehicle 2';
+          echo 'Loading customers...';
+          curl -X POST http://api-gateway:8080/api/crm/customers -H \"Authorization: Bearer $$TOKEN\" -H 'Content-Type: application/json' -d '{\"firstName\": \"John\", \"lastName\": \"Smith\", \"email\": \"john.smith@email.com\", \"phone\": \"(555) 123-4567\", \"address\": \"123 Main St, Anytown, ST 12345\"}' || echo 'Failed to add customer 1';
+          echo 'Loading CRM dashboard data...';
+          curl -X GET http://crm-api:7001/api/dashboard || echo 'CRM dashboard not ready yet';
+          echo 'Loading parts...';
+          curl -X POST http://api-gateway:8080/api/parts -H \"Authorization: Bearer $$TOKEN\" -H 'Content-Type: application/json' -d '{\"partNumber\": \"TOY-OIL-FILTER-001\", \"name\": \"Oil Filter - Toyota Camry\", \"category\": \"Filters\", \"price\": 12.99, \"quantity\": 50}' || echo 'Failed to add part 1';
+        else
+          echo 'Could not get auth token, skipping data load';
+        fi;
+        echo 'Demo data loading complete';
+      fi;
+      echo 'System initialization complete - DMS is ready!';
+      echo '';
+      echo '========================================';
+      echo 'DMS Demo System Ready!';
+      echo '========================================';
+      echo 'Frontend:        http://localhost:3000';
+      echo 'Admin Panel:     http://localhost:3001';
+      echo 'Settings:        http://localhost:3002';
+      echo 'User Management: http://localhost:3003';
+      echo 'CRM Dashboard:   http://localhost:3004';
+      echo 'API Gateway:     http://localhost:8080';
+      echo '';
+      echo 'Demo Credentials:';
+      echo 'Username: admin';
+      echo 'Password: admin123';
+      echo '========================================';
+      "
+    depends_on:
+      api-gateway:
+        condition: service_started
+      auth-service:
+        condition: service_started
+      settings-service:
+        condition: service_started
+      user-management-api:
+        condition: service_started
+      crm-api:
+        condition: service_started
+      db-init:
+        condition: service_completed_successfully
+    networks:
+      - dms-network
+    restart: "no"
+
+networks:
+  dms-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  localstack-data:
+    driver: local

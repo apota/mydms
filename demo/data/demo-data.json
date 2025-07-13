@@ -1,0 +1,152 @@
+{
+  "vehicles": [
+    {
+      "id": "VIN001",
+      "make": "Toyota",
+      "model": "Camry",
+      "year": 2024,
+      "color": "White",
+      "price": 28500,
+      "status": "available",
+      "mileage": 0,
+      "engine": "2.5L 4-Cylinder",
+      "transmission": "Automatic",
+      "features": ["Backup Camera", "Bluetooth", "Cruise Control"]
+    },
+    {
+      "id": "VIN002",
+      "make": "Honda",
+      "model": "Civic",
+      "year": 2024,
+      "color": "Blue",
+      "price": 24000,
+      "status": "available",
+      "mileage": 0,
+      "engine": "2.0L 4-Cylinder",
+      "transmission": "CVT",
+      "features": ["Honda Sensing", "Apple CarPlay", "LED Headlights"]
+    },
+    {
+      "id": "VIN003",
+      "make": "Ford",
+      "model": "F-150",
+      "year": 2024,
+      "color": "Black",
+      "price": 35000,
+      "status": "sold",
+      "mileage": 0,
+      "engine": "3.3L V6",
+      "transmission": "10-Speed Automatic",
+      "features": ["4WD", "Towing Package", "SYNC 4"]
+    }
+  ],
+  "customers": [
+    {
+      "id": "CUST001",
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "john.smith@email.com",
+      "phone": "(555) 123-4567",
+      "address": "123 Main St, Anytown, ST 12345",
+      "dateOfBirth": "1985-06-15",
+      "preferredContact": "email"
+    },
+    {
+      "id": "CUST002",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "email": "sarah.johnson@email.com",
+      "phone": "(555) 987-6543",
+      "address": "456 Oak Ave, Somewhere, ST 67890",
+      "dateOfBirth": "1990-03-22",
+      "preferredContact": "phone"
+    }
+  ],
+  "sales": [
+    {
+      "id": "SALE001",
+      "vehicleId": "VIN003",
+      "customerId": "CUST001",
+      "saleDate": "2024-01-15",
+      "salePrice": 33500,
+      "financeType": "loan",
+      "downPayment": 5000,
+      "tradeInValue": 0,
+      "salesPerson": "Mike Wilson"
+    }
+  ],
+  "serviceAppointments": [
+    {
+      "id": "APPT001",
+      "customerId": "CUST001",
+      "vehicleId": "VIN003",
+      "appointmentDate": "2024-02-01",
+      "serviceType": "Oil Change",
+      "description": "Regular maintenance - oil change and filter replacement",
+      "status": "scheduled",
+      "estimatedDuration": "30 minutes",
+      "assignedTechnician": "Tech001"
+    }
+  ],
+  "parts": [
+    {
+      "id": "PART001",
+      "partNumber": "TOY-OIL-FILTER-001",
+      "name": "Oil Filter - Toyota Camry",
+      "category": "Filters",
+      "price": 12.99,
+      "cost": 8.50,
+      "quantity": 50,
+      "minStock": 10,
+      "supplier": "Toyota Parts",
+      "location": "Shelf A-1"
+    },
+    {
+      "id": "PART002",
+      "partNumber": "HON-BRAKE-PAD-001",
+      "name": "Brake Pads - Honda Civic Front",
+      "category": "Brakes",
+      "price": 89.99,
+      "cost": 65.00,
+      "quantity": 25,
+      "minStock": 5,
+      "supplier": "Honda Parts",
+      "location": "Shelf B-3"
+    }
+  ],
+  "users": [
+    {
+      "id": "USER001",
+      "username": "admin",
+      "email": "admin@demoauto.com",
+      "firstName": "System",
+      "lastName": "Administrator",
+      "role": "admin",
+      "department": "Management",
+      "status": "active",
+      "lastLogin": "2024-01-20T10:00:00Z"
+    },
+    {
+      "id": "USER002",
+      "username": "mike.wilson",
+      "email": "mike.wilson@demoauto.com",
+      "firstName": "Mike",
+      "lastName": "Wilson",
+      "role": "sales",
+      "department": "Sales",
+      "status": "active",
+      "lastLogin": "2024-01-20T09:30:00Z"
+    },
+    {
+      "id": "USER003",
+      "username": "tech001",
+      "email": "technician@demoauto.com",
+      "firstName": "Bob",
+      "lastName": "Martinez",
+      "role": "technician",
+      "department": "Service",
+      "status": "active",
+      "lastLogin": "2024-01-20T08:00:00Z"
+    }
+  ]
+}

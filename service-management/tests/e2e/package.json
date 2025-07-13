@@ -1,0 +1,13 @@
+{
+  "name": "dms-service-management-test-runner",
+  "version": "1.0.0",
+  "description": "Test runner for DMS Service Management Module",
+  "scripts": {
+    "test:e2e": "cypress open --config-file tests/e2e/cypress.config.js",
+    "test:e2e:headless": "cypress run --config-file tests/e2e/cypress.config.js",
+    "test:e2e:single": "cypress run --config-file tests/e2e/cypress.config.js --spec"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0"
+  }
+}

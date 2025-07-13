@@ -1,0 +1,131 @@
+name: CRM CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'crm/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'crm/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-test-api:
+    name: Build and Test API
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore crm/src/DMS.CRM.API/DMS.CRM.API.csproj
+    
+    - name: Build
+      run: dotnet build --no-restore crm/src/DMS.CRM.API/DMS.CRM.API.csproj
+    
+    - name: Test
+      run: dotnet test crm/tests/DMS.CRM.API.Tests/DMS.CRM.API.Tests.csproj --verbosity normal
+    
+    - name: Publish
+      if: github.ref == 'refs/heads/main'
+      run: dotnet publish crm/src/DMS.CRM.API/DMS.CRM.API.csproj -c Release -o publish
+
+    - name: Upload API artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: api-build
+        path: publish/
+
+  build-and-test-web:
+    name: Build and Test React Web
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    
+    - name: Install dependencies
+      run: cd crm/src/DMS.CRM.Web && npm ci
+    
+    - name: Build React app
+      run: cd crm/src/DMS.CRM.Web && npm run build
+      env:
+        CI: false
+    
+    - name: Upload Web artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: web-build
+        path: crm/src/DMS.CRM.Web/build/
+
+  deploy-to-dev:
+    name: Deploy to Dev Environment
+    if: github.ref == 'refs/heads/main'
+    needs: [build-and-test-api, build-and-test-web]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download API artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: api-build
+        path: api-publish
+    
+    - name: Download Web artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: web-build
+        path: web-build
+    
+    - name: Set up AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Build and push API Docker image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: dms-crm-api
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        cd crm/src/DMS.CRM.API
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+    
+    - name: Build and push Web Docker image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: dms-crm-web
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        cd crm/src/DMS.CRM.Web
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+    
+    - name: Update ECS services
+      run: |
+        aws ecs update-service --cluster dms-dev --service dms-crm-api-service --force-new-deployment
+        aws ecs update-service --cluster dms-dev --service dms-crm-web-service --force-new-deployment

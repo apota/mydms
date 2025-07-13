@@ -1,0 +1,28 @@
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+
+# Copy project files first, for better layer caching
+COPY ["src/DMS.ServiceManagement.API/DMS.ServiceManagement.API.csproj", "src/DMS.ServiceManagement.API/"]
+COPY ["src/DMS.ServiceManagement.Core/DMS.ServiceManagement.Core.csproj", "src/DMS.ServiceManagement.Core/"]
+COPY ["src/DMS.ServiceManagement.Infrastructure/DMS.ServiceManagement.Infrastructure.csproj", "src/DMS.ServiceManagement.Infrastructure/"]
+
+# Restore dependencies
+RUN dotnet restore "src/DMS.ServiceManagement.API/DMS.ServiceManagement.API.csproj"
+
+# Copy the rest of the code
+COPY . .
+
+# Build and publish
+WORKDIR "/src/src/DMS.ServiceManagement.API"
+RUN dotnet build "DMS.ServiceManagement.API.csproj" -c Release -o /app/build
+RUN dotnet publish "DMS.ServiceManagement.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "DMS.ServiceManagement.API.dll"]

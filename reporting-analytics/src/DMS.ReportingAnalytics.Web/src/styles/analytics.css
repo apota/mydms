@@ -1,0 +1,146 @@
+/* Analytics Dashboard Styles */
+
+/* Layout */
+.analytics-dashboard-layout {
+  height: 100vh;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dashboard-sider {
+  background-color: white;
+}
+
+.dashboard-content-layout {
+  padding: 0 24px;
+}
+
+.dashboard-breadcrumb {
+  margin: 16px 0;
+}
+
+.dashboard-content {
+  background-color: #fff;
+  padding: 24px;
+  min-height: 280px;
+}
+
+/* KPI Dashboard */
+.kpi-dashboard {
+  margin-bottom: 24px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.kpi-grid {
+  margin-top: 16px;
+}
+
+.kpi-card {
+  height: 100%;
+}
+
+.kpi-meta {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+/* Trend Charts */
+.trend-charts-container {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.comparison-control {
+  min-width: 320px;
+}
+
+/* Inventory Recommendations */
+.inventory-recommendations {
+  margin-top: 24px;
+}
+
+.card-header-with-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .chart-controls {
+    margin-top: 16px;
+    width: 100%;
+  }
+  
+  .comparison-control {
+    margin-top: 8px;
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .card-header-with-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .card-header-with-actions button {
+    margin-top: 8px;
+  }
+}

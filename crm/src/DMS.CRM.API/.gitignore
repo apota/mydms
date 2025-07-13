@@ -1,0 +1,53 @@
+# Ignore build output
+bin/
+obj/
+out/
+
+# Ignore Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.vscode/
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+
+# Ignore database files
+*.rdb
+*.sqlite
+*.sqlite3
+*.db
+
+# Ignore appsettings with credentials
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Ignore EF migrations backup files
+*.bak
+
+# Ignore AWS SAM CLI and CloudFormation files
+.aws-sam/
+samconfig.toml
+*.yaml
+template.yaml
+
+# Ignore Docker related files
+*.dockerignore
+.dockerhub-credentials
+
+# Ignore test coverage reports
+**/coverage/
+**/TestResults/
+coveragereport/
+
+# Ignore misc
+.DS_Store
+.env
+.env.*
+*.log
+*.swp
+node_modules/

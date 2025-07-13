@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMS Module Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        .warning { background: #fff3cd; border-color: #ffeaa7; }
+        .module-link { display: inline-block; margin: 5px; padding: 10px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; transition: background 0.3s; }
+        .module-link:hover { background: #0056b3; }
+        .nav-link { background: #28a745; }
+        .nav-link:hover { background: #1e7e34; }
+        .test-link { background: #17a2b8; }
+        .test-link:hover { background: #138496; }
+        .status { font-weight: bold; }
+        .online { color: #28a745; }
+        .offline { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 DMS Module Navigation Test</h1>
+        
+        <div class="test-section info">
+            <h3>📊 Server Status</h3>
+            <p>Current URL: <span id="current-url"></span></p>
+            <p>Server Status: <span id="server-status" class="status">Checking...</span></p>
+            <button onclick="checkStatus()" style="padding: 5px 10px; margin-left: 10px;">Refresh Status</button>
+        </div>
+        
+        <div class="test-section success">
+            <h3>📱 Main Navigation</h3>
+            <p>Test the main application pages:</p>
+            
+            <a href="index.html" class="module-link nav-link">🏠 Dashboard</a>
+            <a href="user-management.html" class="module-link nav-link">👥 User Management</a>
+            <a href="http://localhost:3004/login" class="module-link nav-link" target="_blank">🔐 Login Service</a>
+        </div>
+        
+        <div class="test-section success">
+            <h3>🔧 All Module Links</h3>
+            <p>Click on any module link below to test navigation:</p>
+            
+            <a href="modules/crm.html" class="module-link">👥 CRM Module</a>
+            <a href="modules/inventory.html" class="module-link">📦 Inventory Module</a>
+            <a href="modules/sales.html" class="module-link">💰 Sales Module</a>
+            <a href="modules/service.html" class="module-link">🔧 Service Module</a>
+            <a href="modules/parts.html" class="module-link">⚙️ Parts Module</a>
+            <a href="modules/reporting.html" class="module-link">📊 Reporting Module</a>
+        </div>
+        
+        <div class="test-section info">
+            <h3>🧪 Direct Module Tests</h3>
+            <p>Test individual module file access:</p>
+            
+            <a href="modules/crm.html" class="module-link test-link" target="_blank">Test CRM</a>
+            <a href="modules/service.html" class="module-link test-link" target="_blank">Test Service</a>
+            <a href="modules/inventory.html" class="module-link test-link" target="_blank">Test Inventory</a>
+            <a href="modules/sales.html" class="module-link test-link" target="_blank">Test Sales</a>
+            <a href="modules/parts.html" class="module-link test-link" target="_blank">Test Parts</a>
+            <a href="modules/reporting.html" class="module-link test-link" target="_blank">Test Reporting</a>
+        </div>
+        
+        <div class="test-section warning">
+            <h3>🔧 Troubleshooting</h3>
+            <p>If modules show "can't be reached" or "404 Not Found":</p>
+            <ol>
+                <li><strong>Check Web Server:</strong> Make sure you're accessing via http://localhost:3000 (not file://)</li>
+                <li><strong>Start Server:</strong> Run <code>start-dev-server.cmd</code> or <code>start-web-only.cmd</code></li>
+                <li><strong>Login Required:</strong> Go to <a href="http://localhost:3004/login" target="_blank">login service</a> and use demo credentials</li>
+                <li><strong>Check Files:</strong> Verify all module files exist in the modules/ directory</li>
+                <li><strong>Browser Console:</strong> Press F12 and check for JavaScript errors</li>
+                <li><strong>Port Conflict:</strong> If port 3000 is busy, try port 3001: <code>python -m http.server 3001</code></li>
+            </ol>
+        </div>
+        
+        <div class="test-section">
+            <h3>� Expected Module Files</h3>
+            <p>All these files should exist for modules to work:</p>
+            <ul>
+                <li>✅ modules/crm.html</li>
+                <li>✅ modules/inventory.html</li>
+                <li>✅ modules/sales.html</li>
+                <li>✅ modules/service.html</li>
+                <li>✅ modules/parts.html</li>
+                <li>✅ modules/reporting.html</li>
+            </ul>
+        </div>
+        
+        <div class="test-section info">
+            <h3>🚀 Quick Start Commands</h3>
+            <p><strong>Development Server (Python):</strong></p>
+            <pre>cd c:\work\mydms
+start-dev-server.cmd</pre>
+            
+            <p><strong>Web Only (Docker):</strong></p>
+            <pre>cd c:\work\mydms
+start-web-only.cmd</pre>
+            
+            <p><strong>Full System (Docker):</strong></p>
+            <pre>cd c:\work\mydms\demo
+start-complete-dms.cmd</pre>
+        </div>
+    </div>
+
+    <script>
+        function checkStatus() {
+            document.getElementById('current-url').textContent = window.location.href;
+            
+            // Simple check if we can fetch the index page
+            fetch('index.html')
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('server-status').innerHTML = '<span class="online">🟢 Online</span>';
+                    } else {
+                        document.getElementById('server-status').innerHTML = '<span class="offline">🔴 Server Error</span>';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('server-status').innerHTML = '<span class="offline">🔴 Offline - Start web server</span>';
+                });
+        }
+        
+        // Check status on page load
+        document.addEventListener('DOMContentLoaded', checkStatus);
+    </script>
+</body>
+</html>

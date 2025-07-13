@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer API Test - DMS</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 6px; }
+        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
+        button { background: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        button:disabled { background: #6c757d; cursor: not-allowed; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        .form-group { margin: 10px 0; }
+        input, select { width: 200px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        label { display: inline-block; width: 100px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DMS Customer API Test</h1>
+        <p>Use this page to test the customer creation functionality with LocalStack.</p>
+        
+        <div class="test-section info">
+            <h3>📡 Connection Status</h3>
+            <p>LocalStack Status: <span id="localstack-status">Checking...</span></p>
+            <p>CRM API Status: <span id="crm-status">Checking...</span></p>
+            <button onclick="checkConnections()">Refresh Status</button>
+            <button onclick="showCorsHelp()">CORS Troubleshooting</button>
+        </div>
+        
+        <div class="test-section" id="cors-help" style="display: none;">
+            <h3>🚨 CORS Troubleshooting</h3>
+            <div class="error">
+                <strong>If you see CORS errors:</strong>
+                <ol>
+                    <li>Stop LocalStack (Ctrl+C in terminal)</li>
+                    <li>Run <code>start-localstack-cors.cmd</code> instead</li>
+                    <li>Wait for LocalStack to fully start</li>
+                    <li>Refresh this page</li>
+                </ol>
+                <p><strong>Manual Command:</strong></p>
+                <pre>docker run --rm -it -p 4566:4566 -e CORS=* -e EXTRA_CORS_ALLOWED_ORIGINS="http://localhost:3000,file://" localstack/localstack</pre>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>👤 Add Test Customer</h3>
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" id="test-name" value="Test Customer" />
+            </div>
+            <div class="form-group">
+                <label>Phone:</label>
+                <input type="text" id="test-phone" value="(555) 123-4567" />
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="test-email" value="test@example.com" />
+            </div>
+            <div class="form-group">
+                <label>Type:</label>
+                <select id="test-type">
+                    <option value="Sales">Sales</option>
+                    <option value="Service">Service</option>
+                    <option value="Parts">Parts</option>
+                    <option value="Lead">Lead</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Notes:</label>
+                <input type="text" id="test-notes" value="Test customer for API verification" />
+            </div>
+            <button onclick="addTestCustomer()" id="add-btn">Add Customer</button>
+            <button onclick="generateRandomCustomer()">Generate Random Customer</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 Get All Customers</h3>
+            <button onclick="getAllCustomers()">Fetch Customers</button>
+            <pre id="customers-list">Click "Fetch Customers" to see results...</pre>
+        </div>
+        
+        <div class="test-section">
+            <h3>🗄️ LocalStack Database Actions</h3>
+            <button onclick="initializeDatabase()">Initialize Database</button>
+            <button onclick="checkDatabaseHealth()">Check Database Health</button>
+            <pre id="db-status">Click buttons above to see database status...</pre>
+        </div>
+        
+        <div class="test-section">
+            <h3>📝 Activity Log</h3>
+            <button onclick="clearLog()">Clear Log</button>
+            <pre id="activity-log">Ready to test customer API...</pre>
+        </div>
+    </div>
+
+    <script src="../js/localstack-api.js"></script>
+    <script src="../js/crm-api.js"></script>
+    <script>
+        let logCounter = 0;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.getElementById('activity-log');
+            const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+            logElement.textContent += `\n[${timestamp}] ${prefix} ${message}`;
+            logElement.scrollTop = logElement.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function clearLog() {
+            document.getElementById('activity-log').textContent = 'Activity log cleared...';
+        }
+        
+        async function checkConnections() {
+            log('Checking API connections...');
+            
+            // Check LocalStack
+            const localStackStatus = document.getElementById('localstack-status');
+            const isLocalStackConnected = await LocalStackAPI.checkConnection();
+            if (isLocalStackConnected) {
+                localStackStatus.textContent = '✅ Connected';
+                localStackStatus.style.color = 'green';
+                log('LocalStack connection: SUCCESS', 'success');
+            } else {
+                localStackStatus.textContent = '❌ Disconnected';
+                localStackStatus.style.color = 'red';
+                log('LocalStack connection: FAILED', 'error');
+            }
+            
+            // Check CRM API
+            const crmStatus = document.getElementById('crm-status');
+            if (typeof CrmAPI !== 'undefined') {
+                const isCrmConnected = await CrmAPI.checkConnection();
+                if (isCrmConnected) {
+                    crmStatus.textContent = '✅ Connected';
+                    crmStatus.style.color = 'green';
+                    log('CRM API connection: SUCCESS', 'success');
+                } else {
+                    crmStatus.textContent = '❌ Disconnected';
+                    crmStatus.style.color = 'red';
+                    log('CRM API connection: FAILED', 'error');
+                }
+            } else {
+                crmStatus.textContent = '❓ Not Available';
+                crmStatus.style.color = 'orange';
+                log('CRM API: Not loaded', 'warning');
+            }
+        }
+        
+        async function addTestCustomer() {
+            const button = document.getElementById('add-btn');
+            button.disabled = true;
+            button.textContent = 'Adding...';
+            
+            const customerData = {
+                name: document.getElementById('test-name').value,
+                phone: document.getElementById('test-phone').value,
+                email: document.getElementById('test-email').value,
+                type: document.getElementById('test-type').value,
+                notes: document.getElementById('test-notes').value
+            };
+            
+            log(`Attempting to add customer: ${customerData.name}`);
+            
+            try {
+                // Try LocalStack first
+                const result = await LocalStackAPI.addCustomer(customerData);
+                if (result.success) {
+                    log(`Customer added successfully to LocalStack! ID: ${result.data?.id || 'Unknown'}`, 'success');
+                    getAllCustomers(); // Refresh the customer list
+                } else {
+                    log(`Failed to add customer to LocalStack: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`Error adding customer: ${error.message}`, 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Add Customer';
+            }
+        }
+        
+        async function getAllCustomers() {
+            log('Fetching all customers from LocalStack...');
+            try {
+                const result = await LocalStackAPI.getCustomers();
+                const listElement = document.getElementById('customers-list');
+                
+                if (result.success && result.data) {
+                    listElement.textContent = JSON.stringify(result.data, null, 2);
+                    log(`Retrieved ${result.data.length} customers from database`, 'success');
+                } else {
+                    listElement.textContent = `Error: ${result.error || 'Unknown error'}`;
+                    log(`Failed to fetch customers: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`Error fetching customers: ${error.message}`, 'error');
+                document.getElementById('customers-list').textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        async function initializeDatabase() {
+            log('Initializing LocalStack database...');
+            try {
+                const result = await LocalStackAPI.initializeDatabase();
+                const statusElement = document.getElementById('db-status');
+                
+                if (result.success) {
+                    statusElement.textContent = 'Database initialized successfully!';
+                    log('Database initialization: SUCCESS', 'success');
+                } else {
+                    statusElement.textContent = `Initialization failed: ${result.error}`;
+                    log(`Database initialization failed: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                log(`Database initialization error: ${error.message}`, 'error');
+                document.getElementById('db-status').textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        async function checkDatabaseHealth() {
+            log('Checking database health...');
+            try {
+                const isConnected = await LocalStackAPI.checkConnection();
+                const statusElement = document.getElementById('db-status');
+                
+                if (isConnected) {
+                    statusElement.textContent = 'Database is healthy and responding!';
+                    log('Database health check: PASS', 'success');
+                } else {
+                    statusElement.textContent = 'Database health check failed - LocalStack may not be running';
+                    log('Database health check: FAIL', 'error');
+                }
+            } catch (error) {
+                log(`Database health check error: ${error.message}`, 'error');
+                document.getElementById('db-status').textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        function generateRandomCustomer() {
+            const names = ['John Smith', 'Sarah Johnson', 'Michael Brown', 'Emily Wilson', 'David Lee', 'Lisa Davis', 'Robert Miller', 'Jessica Garcia'];
+            const phones = ['(555) 123-4567', '(555) 987-6543', '(555) 555-1234', '(555) 777-8888', '(555) 234-5678'];
+            const domains = ['example.com', 'test.com', 'demo.org', 'sample.net'];
+            const types = ['Sales', 'Service', 'Parts', 'Lead'];
+            
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomPhone = phones[Math.floor(Math.random() * phones.length)];
+            const randomEmail = `${randomName.toLowerCase().replace(' ', '.')}@${domains[Math.floor(Math.random() * domains.length)]}`;
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            document.getElementById('test-name').value = randomName;
+            document.getElementById('test-phone').value = randomPhone;
+            document.getElementById('test-email').value = randomEmail;
+            document.getElementById('test-type').value = randomType;
+            document.getElementById('test-notes').value = `Generated test customer for ${randomType} department`;
+            
+            log(`Generated random customer: ${randomName}`, 'info');
+        }
+        
+        function showCorsHelp() {
+            const corsHelp = document.getElementById('cors-help');
+            corsHelp.style.display = corsHelp.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Customer API Test page loaded');
+            checkConnections();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  reporting-postgres:
+    image: postgres:14
+    container_name: reporting-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: reportinguser
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: reporting
+    volumes:
+      - reporting-postgres-data:/var/lib/postgresql/data
+      # Initialize schemas and sample data
+      - ./scripts/db-init:/docker-entrypoint-initdb.d
+    networks:
+      - dms-network
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: reporting-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=dynamodb,s3,sqs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - ./scripts/localstack:/docker-entrypoint-initaws.d
+    networks:
+      - dms-network
+
+volumes:
+  reporting-postgres-data:
+    driver: local
+
+networks:
+  dms-network:
+    name: dms-network

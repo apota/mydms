@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  parts-api:
+    build:
+      context: .
+      dockerfile: src/DMS.PartsManagement.API/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=DMS_PartsManagement;Username=dmsuser;Password=DmsPassword123!
+    depends_on:
+      - postgres
+  
+  parts-web:
+    build:
+      context: ./src/DMS.PartsManagement.Web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_BASE_URL=http://localhost:5001/api
+    depends_on:
+      - parts-api
+  
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=dmsuser
+      - POSTGRES_PASSWORD=DmsPassword123!
+      - POSTGRES_DB=DMS_PartsManagement
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@dms.com
+      - PGADMIN_DEFAULT_PASSWORD=DmsPassword123!
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

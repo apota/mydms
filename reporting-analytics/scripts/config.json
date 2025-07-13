@@ -1,0 +1,42 @@
+{
+    "db_connection": "host=localhost dbname=reporting user=reportinguser password=yourpassword",
+    "sqlalchemy_connection": "postgresql://reportinguser:yourpassword@localhost/reporting",
+    "module_apis": {
+        "sales": "http://localhost:7002/api",
+        "inventory": "http://localhost:7001/api",
+        "service": "http://localhost:7003/api",
+        "parts": "http://localhost:7004/api",
+        "crm": "http://localhost:7005/api",
+        "financial": "http://localhost:7006/api"
+    },
+    "logging": {
+        "level": "INFO",
+        "file": "datamart_etl.log"
+    },
+    "retry": {
+        "max_retries": 3,
+        "delay_seconds": 5
+    },
+    "data_marts": {
+        "sales_analytics": {
+            "refresh_schedule": "0 0 1 * * ?",
+            "dependencies": ["sales", "inventory", "crm"]
+        },
+        "service_analytics": {
+            "refresh_schedule": "0 0 2 * * ?",
+            "dependencies": ["service", "inventory"]
+        },
+        "inventory_analytics": {
+            "refresh_schedule": "0 0 3 * * ?",
+            "dependencies": ["inventory"]
+        },
+        "customer_analytics": {
+            "refresh_schedule": "0 0 4 * * ?",
+            "dependencies": ["crm", "sales", "service"]
+        },
+        "financial_analytics": {
+            "refresh_schedule": "0 0 5 * * ?",
+            "dependencies": ["financial", "sales", "service", "parts"]
+        }
+    }
+}

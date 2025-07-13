@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  login-management-api:
+    build: 
+      context: ./src/DMS.LoginManagement.API
+      dockerfile: Dockerfile
+    container_name: dms-login-api
+    restart: unless-stopped
+    ports:
+      - "5004:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=login-db;Database=DMS_LoginManagement;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+      - JwtSettings__SecretKey=your-super-secret-jwt-key-that-is-at-least-32-characters-long
+      - JwtSettings__Issuer=DMS.LoginManagement
+      - JwtSettings__Audience=DMS.Users
+      - JwtSettings__AccessTokenExpiryMinutes=15
+      - JwtSettings__RefreshTokenExpiryDays=7
+      - EmailSettings__SmtpServer=smtp.gmail.com
+      - EmailSettings__SmtpPort=587
+      - EmailSettings__SenderEmail=noreply@dms.com
+      - EmailSettings__SenderName=DMS System
+      - EmailSettings__Username=your-email@gmail.com
+      - EmailSettings__Password=your-app-password
+    depends_on:
+      - login-db
+    networks:
+      - dms-network
+
+  login-management-web:
+    build: 
+      context: ./src/DMS.LoginManagement.Web
+      dockerfile: Dockerfile
+    container_name: dms-login-web
+    restart: unless-stopped
+    ports:
+      - "3004:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5004/api
+    depends_on:
+      - login-management-api
+    networks:
+      - dms-network
+
+  login-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: dms-login-db
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - login_db_data:/var/opt/mssql
+    networks:
+      - dms-network
+
+  login-db-init:
+    build: 
+      context: ./src/DMS.LoginManagement.API
+      dockerfile: Dockerfile
+    container_name: dms-login-db-init
+    restart: "no"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=login-db;Database=DMS_LoginManagement;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+    command: ["dotnet", "ef", "database", "update"]
+    depends_on:
+      - login-db
+    networks:
+      - dms-network
+
+volumes:
+  login_db_data:
+
+networks:
+  dms-network:
+    driver: bridge

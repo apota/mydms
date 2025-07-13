@@ -1,0 +1,36 @@
+{
+  "id": "sj001",
+  "repairOrderId": "ro001",
+  "description": "Front brake pad replacement",
+  "jobType": "Brake Service",
+  "status": "NotStarted",
+  "laborOperationCode": "BRK-001",
+  "laborOperationDescription": "Replace front brake pads and inspect rotors",
+  "estimatedHours": 1.5,
+  "actualHours": 0,
+  "technicianId": "tech001",
+  "technicianName": "John Technician",
+  "notes": "",
+  "parts": [
+    {
+      "id": "sjp001",
+      "partId": "p001",
+      "partNumber": "BP-12345",
+      "description": "Premium front brake pads",
+      "quantity": 1,
+      "unitPrice": 89.99,
+      "totalAmount": 89.99,
+      "status": "Available"
+    },
+    {
+      "id": "sjp002",
+      "partId": "p002",
+      "partNumber": "HW-56789",
+      "description": "Brake hardware kit",
+      "quantity": 1,
+      "unitPrice": 24.99,
+      "totalAmount": 24.99,
+      "status": "Available"
+    }
+  ]
+}

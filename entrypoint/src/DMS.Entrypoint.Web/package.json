@@ -1,0 +1,63 @@
+{
+  "name": "dms-frontend",
+  "version": "1.0.0",
+  "description": "DMS Frontend React Application",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2",
+    "react-scripts": "5.0.1",
+    "@mui/material": "^5.14.5",
+    "@mui/icons-material": "^5.14.3",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/x-data-grid": "^6.10.2",
+    "@mui/x-date-pickers": "^6.10.2",
+    "@mui/lab": "^5.0.0-alpha.140",
+    "axios": "^1.4.0",
+    "react-query": "^3.39.3",
+    "formik": "^2.4.3",
+    "yup": "^1.2.0",
+    "react-hot-toast": "^2.4.1",
+    "recharts": "^2.7.2",
+    "dayjs": "^1.11.9",
+    "react-helmet": "^6.1.0",
+    "qrcode.react": "^3.1.0",
+    "react-webcam": "^7.1.1",
+    "react-dropzone": "^14.2.3",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@types/lodash": "^4.14.195",
+    "@types/uuid": "^9.0.2"
+  },
+  "proxy": "http://localhost:8080"
+}

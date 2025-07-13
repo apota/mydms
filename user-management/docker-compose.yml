@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  user-management-api:
+    build:
+      context: .
+      dockerfile: src/DMS.UserManagement.API/Dockerfile
+    ports:
+      - "5003:5003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5003
+      - DB_HOST=user-management-db
+      - DB_PORT=5432
+      - DB_NAME=dms_users
+      - DB_USER=dms_user
+      - DB_PASSWORD=dms_password
+    depends_on:
+      - user-management-db
+    networks:
+      - user-management-network
+
+  user-management-db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=dms_users
+      - POSTGRES_USER=dms_user
+      - POSTGRES_PASSWORD=dms_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_management_db_data:/var/lib/postgresql/data
+    networks:
+      - user-management-network
+
+  user-management-web:
+    build:
+      context: src/DMS.UserManagement.Web
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5003/api
+    depends_on:
+      - user-management-api
+    networks:
+      - user-management-network
+
+volumes:
+  user_management_db_data:
+
+networks:
+  user-management-network:
+    driver: bridge

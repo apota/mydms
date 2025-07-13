@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - DMS</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container { 
+            max-width: 600px; 
+            background: rgba(255,255,255,0.1); 
+            padding: 40px; 
+            border-radius: 15px; 
+            backdrop-filter: blur(10px);
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        h1 { 
+            font-size: 3em; 
+            margin: 0 0 20px 0; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .emoji { font-size: 4em; margin-bottom: 20px; }
+        .module-links { 
+            margin: 30px 0; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+        }
+        .module-link { 
+            display: block; 
+            padding: 12px 20px; 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 8px; 
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .module-link:hover { 
+            background: rgba(255,255,255,0.3); 
+            transform: translateY(-2px);
+        }
+        .home-link {
+            background: rgba(40, 167, 69, 0.8);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .help-text {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 0.9em;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🔍</div>
+        <h1>404 - Page Not Found</h1>
+        <p>The page you're looking for doesn't exist or may have been moved.</p>
+        
+        <div class="help-text">
+            <strong>Looking for a specific module?</strong><br>
+            All DMS modules are available below. If you're having trouble accessing modules, make sure you're logged in and the web server is running properly.
+        </div>
+        
+        <div class="module-links">
+            <a href="/" class="module-link home-link">🏠 Dashboard</a>
+            <a href="/modules/crm.html" class="module-link">👥 CRM</a>
+            <a href="/modules/inventory.html" class="module-link">📦 Inventory</a>
+            <a href="/modules/sales.html" class="module-link">💰 Sales</a>
+            <a href="/modules/service.html" class="module-link">🔧 Service</a>
+            <a href="/modules/parts.html" class="module-link">⚙️ Parts</a>
+            <a href="/modules/reporting.html" class="module-link">📊 Reporting</a>
+            <a href="/user-management.html" class="module-link">👤 Users</a>
+            <a href="/module-test.html" class="module-link">🧪 Test Page</a>
+        </div>
+        
+        <div class="help-text">
+            <strong>Troubleshooting:</strong><br>
+            • Check the URL for typos<br>
+            • Make sure you're logged in<br>
+            • Try refreshing the page<br>
+            • Go back to the <a href="/" style="color: #fff; text-decoration: underline;">dashboard</a><br>
+            • Use the <a href="/module-test.html" style="color: #fff; text-decoration: underline;">test page</a> to verify all modules
+        </div>
+    </div>
+</body>
+</html>

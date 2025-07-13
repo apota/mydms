@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    container_name: sales_db
+    environment:
+      POSTGRES_DB: salesmanagement
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - sales_pgdata:/var/lib/postgresql/data
+    networks:
+      - sales-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d salesmanagement"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: sales_aws_services
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,dynamodb
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - ./localstack-init:/docker-entrypoint-initaws.d
+      - ./localstack-data:/tmp/localstack/data
+    networks:
+      - sales-net
+
+  api:
+    build:
+      context: ./src
+      dockerfile: DMS.SalesManagement.API/Dockerfile
+    container_name: sales_api
+    depends_on:
+      db:
+        condition: service_healthy
+      localstack:
+        condition: service_started
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__SalesDatabase=Host=db;Database=salesmanagement;Username=admin;Password=${DB_PASSWORD:-admin_password}
+      - AWS__ServiceURL=http://localstack:4566
+      - AWS__DocumentBucketName=dms-sales-documents
+    ports:
+      - "5000:80"
+    networks:
+      - sales-net
+
+  web:
+    build:
+      context: ./src/DMS.SalesManagement.Web
+      dockerfile: Dockerfile
+    container_name: sales_web
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+    networks:
+      - sales-net
+
+networks:
+  sales-net:
+    driver: bridge
+
+volumes:
+  sales_pgdata:

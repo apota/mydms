@@ -1,0 +1,115 @@
+.advanced-search-container {
+  padding: 20px 0;
+}
+
+.vehicle-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.vehicle-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.no-image-placeholder {
+  height: 200px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+}
+
+.vehicle-details {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.vehicle-details > div {
+  margin-bottom: 5px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-instock {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-frontline {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-intransit {
+  background-color: #6c757d;
+  color: white;
+}
+
+.status-reconditioning {
+  background-color: #fd7e14;
+  color: white;
+}
+
+.status-onhold {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-sold {
+  background-color: #dc3545;
+  color: white;
+}
+
+.status-delivered {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.days-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.days-normal {
+  background-color: #28a745;
+  color: white;
+}
+
+.days-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.days-critical {
+  background-color: #dc3545;
+  color: white;
+}
+
+.feature-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .vehicle-img {
+    height: 150px;
+  }
+}

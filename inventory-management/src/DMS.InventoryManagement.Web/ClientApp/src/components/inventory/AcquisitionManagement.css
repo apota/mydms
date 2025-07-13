@@ -1,0 +1,49 @@
+.acquisition-management-container {
+  padding: 20px 0;
+}
+
+.vehicle-table-container, .workflow-table-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.selected-row {
+  background-color: #e8f4fd !important;
+}
+
+.stats-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stats-card h5 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #6c757d;
+}
+
+.stats-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* Custom Radio Buttons */
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* Inspection styling */
+.inspection-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}

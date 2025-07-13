@@ -1,0 +1,106 @@
+.marketplace-manager {
+  padding-bottom: 2rem;
+}
+
+.marketplace-manager .vehicle-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.marketplace-manager .list-group-item {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.marketplace-manager .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+.marketplace-manager .list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.marketplace-manager .vehicle-item {
+  display: flex;
+  align-items: center;
+}
+
+.marketplace-manager .vehicle-image {
+  width: 60px;
+  height: 45px;
+  margin-right: 12px;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.marketplace-manager .vehicle-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.marketplace-manager .placeholder-image {
+  color: #adb5bd;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.marketplace-manager .vehicle-info {
+  flex: 1;
+}
+
+.marketplace-manager .vehicle-title {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.marketplace-manager .vehicle-subtitle {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.marketplace-manager .marketplace-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.marketplace-manager .marketplace-features {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.marketplace-manager .stats-table td {
+  padding: 0.3rem;
+}
+
+.marketplace-manager .stats-table td:first-child {
+  font-weight: 500;
+  color: #495057;
+}
+
+.marketplace-manager .card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.marketplace-manager .btn-block {
+  display: block;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .marketplace-manager .vehicle-list {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .marketplace-manager .vehicle-list {
+    max-height: 250px;
+  }
+}

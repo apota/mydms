@@ -1,0 +1,17 @@
+{
+  "id": "ro001",
+  "orderNumber": "RO-2025-001234",
+  "customerId": "c001",
+  "customerName": "John Smith",
+  "vehicleId": "v001",
+  "vehicleInfo": "2020 Honda Accord - Blue (VIN: 1HGCV2F34LA012345)",
+  "createdDate": "2025-06-23T09:00:00Z",
+  "status": "Created",
+  "estimatedCompletionDate": "2025-06-24T17:00:00Z",
+  "serviceTotalAmount": 0,
+  "partsTotalAmount": 0,
+  "totalAmount": 0,
+  "notes": "Customer reported check engine light and squeaking brakes",
+  "serviceJobs": [],
+  "inspections": []
+}

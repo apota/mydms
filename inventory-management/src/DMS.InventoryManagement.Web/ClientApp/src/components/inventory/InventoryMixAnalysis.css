@@ -1,0 +1,104 @@
+.recommendations-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.recommendation-item {
+    border-left-width: 3px;
+    transition: transform 0.2s;
+}
+
+.recommendation-item:hover {
+    transform: translateY(-2px);
+}
+
+.recommendation-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.recommendation-badge.increase {
+    background-color: #28a745;
+}
+
+.recommendation-badge.decrease {
+    background-color: #dc3545;
+}
+
+.recommendation-badge.maintain {
+    background-color: #6c757d;
+}
+
+.recommendation-reason {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.recommendation-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 5px;
+}
+
+.metric-label {
+    font-size: 13px;
+    color: #666;
+}
+
+.metric-value {
+    font-weight: bold;
+}
+
+.turnover-card {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.turnover-card:hover {
+    transform: translateY(-3px);
+}
+
+.turnover-card.fast-turnover {
+    border-top: 4px solid #28a745;
+}
+
+.turnover-card.slow-turnover {
+    border-top: 4px solid #dc3545;
+}
+
+.turnover-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.turnover-group {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.turnover-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.inventory-count {
+    font-size: 14px;
+    color: #666;
+}
+
+.chart-container {
+    height: 350px;
+}
+
+.trends-chart-container {
+    height: 350px;
+}

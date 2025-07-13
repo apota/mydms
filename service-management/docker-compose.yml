@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database
+  postgres:
+    image: postgres:13
+    container_name: service-management-db
+    environment:
+      POSTGRES_DB: service_management
+      POSTGRES_USER: serviceadmin
+      POSTGRES_PASSWORD: servicepass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - service-pg-data:/var/lib/postgresql/data
+    networks:
+      - service-network
+
+  # API backend
+  api:
+    build:
+      context: ./src/DMS.ServiceManagement.API
+      dockerfile: Dockerfile
+    container_name: service-management-api
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Database=service_management;Username=serviceadmin;Password=servicepass123"
+      ASPNETCORE_ENVIRONMENT: Development
+      AWS_REGION: us-west-2
+      # Add other environment variables as needed
+    ports:
+      - "5000:80"
+    networks:
+      - service-network
+
+  # Web frontend
+  web:
+    build:
+      context: ./src/DMS.ServiceManagement.Web
+      dockerfile: Dockerfile
+    container_name: service-management-web
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:5000
+    networks:
+      - service-network
+      
+  # Local DynamoDB for development
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: service-dynamodb-local
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    volumes:
+      - dynamodb-data:/home/dynamodblocal/data
+    networks:
+      - service-network
+
+  # DynamoDB admin UI
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    container_name: service-dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      DYNAMO_ENDPOINT: http://dynamodb-local:8000
+      AWS_REGION: us-west-2
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+    depends_on:
+      - dynamodb-local
+    networks:
+      - service-network
+
+volumes:
+  service-pg-data:
+  dynamodb-data:
+
+networks:
+  service-network:
+    driver: bridge
